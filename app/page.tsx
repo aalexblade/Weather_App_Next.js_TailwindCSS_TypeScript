@@ -28,7 +28,7 @@ export default async function Home({ searchParams }: HomeProps) {
   }
 
   return (
-    <main className="flex-1 w-full bg-linear-to-br from-blue-600 via-blue-500 to-teal-400 p-4 md:p-8">
+    <main className="flex-1 min-h-0 w-full bg-linear-to-br from-blue-600 via-blue-500 to-teal-400 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12 text-center">
           <h1 className="text-4xl md:text-6xl font-black text-white mb-4 drop-shadow-md">
