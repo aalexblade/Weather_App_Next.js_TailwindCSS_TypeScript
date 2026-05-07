@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "SkyCast - Modern Weather Forecasts",
-  description: "A modern, high-performance weather application powered by OpenWeatherMap.",
+  description:
+    "A modern, high-performance weather application powered by OpenWeatherMap.",
 };
 
 export default function RootLayout({
@@ -27,8 +28,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="m-0 p-0 h-full flex flex-col">
         <Navbar />
         {children}
       </body>
