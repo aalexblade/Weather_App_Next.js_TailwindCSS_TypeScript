@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkyCast ☀️
 
-## Getting Started
+A modern, high-performance weather application built with Next.js. Search any city to get current weather conditions and a 5-day forecast with a sleek glassmorphism UI.
 
-First, run the development server:
+## Tech Stack
+
+- **[Next.js](https://nextjs.org/) 16** — App Router, Server Components, streaming
+- **[TypeScript](https://www.typescriptlang.org/)** — Strict typing with descriptive interfaces
+- **[Tailwind CSS](https://tailwindcss.com/) v4** — Utility-first styling, mobile-first design
+- **[Lucide React](https://lucide.dev/)** — Weather iconography
+- **[OpenWeatherMap API](https://openweathermap.org/api)** — Weather data & geocoding
+- **[CodeRabbit](https://coderabbit.ai/)** — AI-powered code review
+
+## Key Features
+
+- **City Search** with autocomplete suggestions (debounced, 5 results)
+- **Current Weather** display with temperature, feels-like, humidity, wind, and cloud coverage
+- **5-Day Forecast** with daily highs/lows and weather icons
+- **Loading States** — spinner while fetching weather and city suggestions
+- **Error Handling** — graceful fallback UI when a city is not found
+- **Image Optimization** — `next/image` with remote patterns configured for OpenWeatherMap icons
+- **Revalidation** — ISR-based caching (hourly revalidation) for weather data
+- **Glassmorphism UI** — backdrop blur, gradient backgrounds, smooth animations
+
+## Installation & Setup
 
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/Weather_App_Next.js_TailwindCSS_TypeScript.git
+cd Weather_App_Next.js_TailwindCSS_TypeScript
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file in the project root:
 
-## Learn More
+```env
+NEXT_PUBLIC_OPENWEATHER_API_KEY=your_api_key_here
+```
 
-To learn more about Next.js, take a look at the following resources:
+Get a free API key at [OpenWeatherMap](https://openweathermap.org/api). The variable is prefixed with `NEXT_PUBLIC_` so it is accessible on the client for geocoding requests.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## AI-Driven Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project was developed with AI-assisted tooling to ensure code quality, consistency, and best practices:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **CodeRabbit** — Every pull request is automatically audited by CodeRabbit AI, which performs static analysis, identifies anti-patterns, enforces project conventions, and provides inline suggestions for improvement. The configuration in `.coderabbit.md` tailors review guidelines to this project's specific tech stack and coding standards.
+- **AGENTS.md** — A context file that codifies architectural decisions (Server vs. Client Components, TypeScript interfaces, Tailwind conventions) so AI agents produce consistent, idiomatic code.
