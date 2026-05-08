@@ -21,7 +21,7 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
           return (
             <div 
               key={day.dt}
-              className="flex-shrink-0 w-32 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex flex-col items-center shadow-lg transition-transform hover:scale-105"
+              className="flex-shrink-0 mt-2 w-32 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 flex flex-col items-center shadow-lg transition-transform hover:scale-105"
             >
               <span className="text-white/60 text-sm font-medium uppercase tracking-wider">
                 {date.toLocaleDateString('en-US', { weekday: 'short' })}
@@ -30,13 +30,13 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
                 {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
               
-              <div className="my-2">
+              <div className="my-2 ">
                 <Image 
                   src={`https://openweathermap.org/img/wn/${weather.icon}.png`}
                   alt={weather.description}
                   width={60}
                   height={60}
-                  className="drop-shadow-md"
+                  className="drop-shadow-md cursor-pointer"
                 />
               </div>
 
