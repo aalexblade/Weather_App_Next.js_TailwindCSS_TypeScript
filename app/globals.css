@@ -5,3 +5,17 @@ html, body {
   padding: 0;
   height: 100%;
 }
+
+@supports not (backdrop-filter: blur(0px)) {
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+@supports not (background: linear-gradient(to bottom right, var(--tw-gradient-stops))) {
+  .bg-linear-to-br {
+    background-image: linear-gradient(to bottom right, #2563eb, #3b82f6, #2dd4bf);
+  }
+}
