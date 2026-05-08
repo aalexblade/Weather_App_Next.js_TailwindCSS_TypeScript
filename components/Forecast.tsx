@@ -7,6 +7,8 @@ interface ForecastProps {
 }
 
 const Forecast: React.FC<ForecastProps> = ({ data }) => {
+  if (!data?.list?.length) return null;
+
   const dailyMap = new Map<string, ForecastData["list"][0][]>();
 
   for (const item of data.list) {
@@ -57,7 +59,7 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
                   alt={weather.description}
                   width={50}
                   height={50}
-                  className="drop-shadow-md w-10 h-10 md:w-[50px] md:h-[50px]"
+                  className="drop-shadow-md w-10 h-10 md:w-13 md:h-13"
                 />
               </div>
 
