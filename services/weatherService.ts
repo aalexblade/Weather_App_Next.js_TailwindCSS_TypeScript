@@ -21,21 +21,29 @@ export async function getCurrentWeather(city: string): Promise<WeatherData> {
   return response.json();
 }
 
-export async function getForecast(city: string): Promise<ForecastData> {
+export async function getForecast(lat: number, lon: number): Promise<ForecastData | null> {
   if (!API_KEY) {
-    throw new Error('OpenWeather API Key is missing');
+    console.error('OpenWeather API Key is missing');
+    return null;
   }
 
-  const response = await fetch(
-    `${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`,
-    { next: { revalidate: 3600 } }
-  );
+  try {
+    const response = await fetch(
+      `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`,
+      { next: { revalidate: 3600 } }
+    );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch forecast');
+    if (!response.ok) {
+      const errorBody = await response.json();
+      console.error(`OpenWeather API Error [${response.status}]:`, errorBody);
+      return null;
+    }
+
+    return response.json();
+  } catch (err) {
+    console.error('Failed to fetch forecast:', err);
+    return null;
   }
-
-  return response.json();
 }
 
 export async function getCitySuggestions(query: string): Promise<CitySuggestion[]> {

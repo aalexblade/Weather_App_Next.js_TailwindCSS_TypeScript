@@ -9,39 +9,27 @@ interface ForecastProps {
 const Forecast: React.FC<ForecastProps> = ({ data }) => {
   if (!data?.list?.length) return null;
 
-  const dailyMap = new Map<string, ForecastData["list"][0][]>();
-
-  for (const item of data.list) {
-    const dateKey = item.dt_txt.split(" ")[0];
-    if (!dailyMap.has(dateKey)) {
-      dailyMap.set(dateKey, []);
-    }
-    dailyMap.get(dateKey)!.push(item);
-  }
-
-  const dailyForecast = Array.from(dailyMap.entries())?.slice(0, 7);
+  const dailyForecast = data.list.filter((item) =>
+    item.dt_txt.includes("12:00:00")
+  );
 
   return (
-    <div className="w-full max-w-6xl mx-auto mt-12 pb-12 px-4">
-      <h3 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6">
+    <div className="w-full max-w-6xl mx-auto mt-12 pb-12">
+      <h3 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 px-4">
         {dailyForecast.length}-Day Forecast
       </h3>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 md:gap-3">
-        {dailyForecast.map(([dateKey, items]) => {
-          const middayItem =
-            items.find((item) => item.dt_txt.includes("12:00:00")) ||
-            items[Math.floor(items.length / 2)];
-          const weather = middayItem.weather[0];
-          const date = new Date(middayItem.dt * 1000);
-          const temps = items.map((item) => item.main.temp);
-          const tempMax = Math.round(Math.max(...temps));
-          const tempMin = Math.round(Math.min(...temps));
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 px-4">
+        {dailyForecast.map((day) => {
+          const weather = day.weather[0];
+          const date = new Date(day.dt * 1000);
+          const tempMax = Math.round(day.main.temp_max);
+          const tempMin = Math.round(day.main.temp_min);
 
           return (
             <div
-              key={dateKey}
-              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 md:p-4 flex flex-col items-center shadow-lg transition-transform hover:scale-105"
+              key={day.dt}
+              className="shrink-0 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 md:p-4 flex flex-col items-center shadow-lg transition-transform hover:scale-105"
             >
               <span className="text-white/60 text-xs md:text-sm font-medium uppercase tracking-wider">
                 {date.toLocaleDateString("en-US", { weekday: "short" })}

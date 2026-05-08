@@ -17,10 +17,8 @@ export default async function Home({ searchParams }: HomeProps) {
   let error = null;
 
   try {
-    [weatherData, forecastData] = await Promise.all([
-      getCurrentWeather(city),
-      getForecast(city),
-    ]);
+    weatherData = await getCurrentWeather(city);
+    forecastData = await getForecast(weatherData.coord.lat, weatherData.coord.lon);
   } catch (err) {
     console.error("Error fetching weather:", err);
     error =
