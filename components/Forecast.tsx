@@ -19,7 +19,7 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
     dailyMap.get(dateKey)!.push(item);
   }
 
-  const dailyForecast = Array.from(dailyMap.entries()).slice(0, 7);
+  const dailyForecast = Array.from(dailyMap.entries())?.slice(0, 7);
 
   return (
     <div className="w-full max-w-6xl mx-auto mt-12 pb-12 px-4">

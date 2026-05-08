@@ -27,6 +27,10 @@ export default async function Home({ searchParams }: HomeProps) {
       "Could not find weather data for that location. Please try another city.";
   }
 
+  if (!weatherData || !forecastData) {
+    return <div className="flex-1 w-full bg-linear-to-br from-blue-600 via-blue-500 to-teal-400 flex items-center justify-center p-8"><div className="text-white text-center"><p className="text-lg font-medium">Error loading data</p><p className="text-sm text-white/60 mt-2">Please try another city.</p></div></div>;
+  }
+
   return (
     <main className="flex-1 min-h-0 w-full bg-linear-to-br from-blue-600 via-blue-500 to-teal-400 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
