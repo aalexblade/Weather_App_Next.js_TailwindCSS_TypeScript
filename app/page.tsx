@@ -2,7 +2,7 @@ import { getCurrentWeather, getForecast } from "@/services/weatherService";
 import SearchBar from "@/components/SearchBar";
 import CurrentWeather from "@/components/CurrentWeather";
 import Forecast from "@/components/Forecast";
-import { AlertCircle } from "lucide-react";
+import ErrorCard from "@/components/ErrorCard";
 
 interface HomeProps {
   searchParams: Promise<{ city?: string }>;
@@ -26,9 +26,15 @@ export default async function Home({ searchParams }: HomeProps) {
   if (!weatherData) {
     return (
       <div className="flex-1 w-full bg-linear-to-br from-blue-600 via-blue-500 to-teal-400 flex items-center justify-center p-8">
-        <div className="text-white text-center">
-          <AlertCircle className="w-12 h-12 text-yellow-300 mx-auto mb-4" />
-          <p className="text-lg font-medium">API is warming up, please refresh</p>
+        <div className="max-w-6xl mx-auto text-center">
+          <header className="mb-12">
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 drop-shadow-md">
+              SkyCast
+            </h1>
+            <p className="text-white/80 text-lg mb-8">Modern Weather Forecasts</p>
+            <SearchBar initialCity={city} />
+          </header>
+          <ErrorCard message="City not found. Please check the spelling and try again." />
         </div>
       </div>
     );

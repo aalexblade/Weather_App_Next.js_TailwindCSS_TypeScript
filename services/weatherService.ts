@@ -19,6 +19,10 @@ export async function getCurrentWeather(city: string): Promise<WeatherData | nul
     );
 
     if (!response.ok) {
+      if (response.status === 404) {
+        console.warn('City not found:', city);
+        return null;
+      }
       const errorBody = await response.json();
       console.error(`OpenWeather API Error [${response.status}]:`, errorBody);
       return null;

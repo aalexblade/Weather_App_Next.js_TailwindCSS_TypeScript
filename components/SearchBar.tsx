@@ -15,6 +15,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ initialCity = '' }) => {
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [validationError, setValidationError] = useState('');
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +53,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ initialCity = '' }) => {
   }, [query]);
 
   const handleSearch = (cityName: string) => {
+    if (!cityName.trim()) {
+      setValidationError('Please enter a city name');
+      return;
+    }
+    setValidationError('');
     setQuery(cityName);
     setIsOpen(false);
     router.push(`/?city=${encodeURIComponent(cityName)}`);
@@ -59,9 +65,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ initialCity = '' }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      handleSearch(query.trim());
-    }
+    handleSearch(query);
   };
 
   return (
@@ -70,7 +74,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ initialCity = '' }) => {
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => { setQuery(e.target.value); setValidationError(''); }}
           placeholder="Search city..."
           className="w-full px-4 py-3 pl-12 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl text-white placeholder-white/70 outline-none focus:ring-2 focus:ring-white/50 transition-all shadow-lg"
         />
@@ -79,6 +83,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ initialCity = '' }) => {
           <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 w-5 h-5 animate-spin" />
         )}
       </form>
+      {validationError && (
+        <p className="text-red-300 text-sm mt-1 text-left">{validationError}</p>
+      )}
 
       {isOpen && suggestions.length > 0 && (
         <ul className="absolute w-full mt-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-2">
