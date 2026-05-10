@@ -4,24 +4,36 @@ const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const GEO_URL = 'https://api.openweathermap.org/geo/1.0';
 
-export async function getCurrentWeather(city: string): Promise<WeatherData> {
+export async function getCurrentWeather(city: string): Promise<WeatherData | null> {
+  console.log("Fetching for:", city, "Key exists:", !!API_KEY);
+
   if (!API_KEY) {
-    throw new Error('OpenWeather API Key is missing');
+    console.error('OpenWeather API Key is missing');
+    return null;
   }
 
-  const response = await fetch(
-    `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`,
-    { next: { revalidate: 3600 } } // Revalidate every hour
-  );
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`,
+      { next: { revalidate: 3600 } }
+    );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch current weather');
+    if (!response.ok) {
+      const errorBody = await response.json();
+      console.error(`OpenWeather API Error [${response.status}]:`, errorBody);
+      return null;
+    }
+
+    return response.json();
+  } catch (err) {
+    console.error('Failed to fetch current weather:', err);
+    return null;
   }
-
-  return response.json();
 }
 
 export async function getForecast(lat: number, lon: number): Promise<ForecastData | null> {
+  console.log("Fetching forecast for:", lat, lon, "Key exists:", !!API_KEY);
+
   if (!API_KEY) {
     console.error('OpenWeather API Key is missing');
     return null;
@@ -47,8 +59,11 @@ export async function getForecast(lat: number, lon: number): Promise<ForecastDat
 }
 
 export async function getCitySuggestions(query: string): Promise<CitySuggestion[]> {
+  console.log("Fetching suggestions for:", query, "Key exists:", !!API_KEY);
+
   if (!API_KEY) {
-    throw new Error('OpenWeather API Key is missing');
+    console.error('OpenWeather API Key is missing');
+    return [];
   }
 
   if (query.length < 3) return [];

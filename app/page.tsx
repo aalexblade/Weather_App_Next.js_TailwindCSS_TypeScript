@@ -3,7 +3,6 @@ import SearchBar from "@/components/SearchBar";
 import CurrentWeather from "@/components/CurrentWeather";
 import Forecast from "@/components/Forecast";
 import { AlertCircle } from "lucide-react";
-import Link from "next/link";
 
 interface HomeProps {
   searchParams: Promise<{ city?: string }>;
@@ -14,19 +13,25 @@ export default async function Home({ searchParams }: HomeProps) {
 
   let weatherData = null;
   let forecastData = null;
-  let error = null;
 
   try {
     weatherData = await getCurrentWeather(city);
-    forecastData = await getForecast(weatherData.coord.lat, weatherData.coord.lon);
+    if (weatherData) {
+      forecastData = await getForecast(weatherData.coord.lat, weatherData.coord.lon);
+    }
   } catch (err) {
     console.error("Error fetching weather:", err);
-    error =
-      "Could not find weather data for that location. Please try another city.";
   }
 
-  if (!weatherData || !forecastData) {
-    return <div className="flex-1 w-full bg-linear-to-br from-blue-600 via-blue-500 to-teal-400 flex items-center justify-center p-8"><div className="text-white text-center"><p className="text-lg font-medium">Error loading data</p><p className="text-sm text-white/60 mt-2">Please try another city.</p></div></div>;
+  if (!weatherData) {
+    return (
+      <div className="flex-1 w-full bg-linear-to-br from-blue-600 via-blue-500 to-teal-400 flex items-center justify-center p-8">
+        <div className="text-white text-center">
+          <AlertCircle className="w-12 h-12 text-yellow-300 mx-auto mb-4" />
+          <p className="text-lg font-medium">API is warming up, please refresh</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -40,23 +45,10 @@ export default async function Home({ searchParams }: HomeProps) {
           <SearchBar initialCity={city} />
         </header>
 
-        {error ? (
-          <div className="flex flex-col items-center justify-center p-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl text-white max-w-md mx-auto">
-            <AlertCircle className="w-12 h-12 text-red-300 mb-4" />
-            <p className="text-center font-medium">{error}</p>
-            <Link
-              href="/"
-              className="mt-6 px-6 py-2 bg-white/20 hover:bg-white/30 rounded-xl transition-colors border border-white/10"
-            >
-              Back to London
-            </Link>
-          </div>
-        ) : (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {weatherData && <CurrentWeather data={weatherData} />}
-            {forecastData && <Forecast data={forecastData} />}
-          </div>
-        )}
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+          {weatherData && <CurrentWeather data={weatherData} />}
+          {forecastData && <Forecast data={forecastData} />}
+        </div>
       </div>
     </main>
   );
